@@ -1,0 +1,334 @@
+Project GRE {
+  database_type: 'PostgreSQL'
+}
+
+// ==========================================
+// 1. 회원
+// ==========================================
+
+Table users {
+  id bigint [pk, increment]
+  login_id varchar(50) [not null, unique]
+  email varchar(255) [not null, unique]
+  password_hash varchar(255) [not null]
+  email_verified boolean [not null, default: false]
+  status varchar(20) [not null, default: 'ACTIVE']
+
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  deleted_at timestamptz
+}
+
+// ==========================================
+// 2. 자유게시판
+// ==========================================
+
+Table free_posts {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+
+  title varchar(255) [not null]
+  content text [not null]
+
+  view_count int [not null, default: 0]
+  like_count int [not null, default: 0]
+
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (user_id)
+    (created_at)
+  }
+}
+
+// ==========================================
+// 3. 질문게시판
+// ==========================================
+
+Table question_posts {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+
+  title varchar(255) [not null]
+  content text [not null]
+
+  question_category varchar(50)
+  question_status varchar(20) [not null, default: 'OPEN']
+  view_count int [not null, default: 0] 
+  checked_commentid int [ref: > community_comments.id]
+
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  resolved_at timestamptz
+
+
+  indexes {
+    (user_id)
+    (question_status, created_at)
+  }
+}
+
+// ==========================================
+// 4. 피해 사례 공유 게시판
+// ==========================================
+
+Table dispute_posts {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+
+  title varchar(255) [not null]
+  content text [not null]
+
+  merchant_name varchar(255)
+  purchase_site varchar(255)
+  dispute_type varchar(50)
+  resolution_status varchar(30) [not null, default: 'IN_PROGRESS']
+
+  view_count int [not null, default: 0]
+
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+
+  indexes {
+    (user_id)
+    (dispute_type, resolution_status)
+  }
+}
+
+// ==========================================
+// 5. 통합 댓글
+// ==========================================
+
+Table community_comments {
+  id bigint [pk, increment]
+  user_id bigint [not null, ref: > users.id]
+
+  free_post_id bigint [ref: > free_posts.id]
+  question_post_id bigint [ref: > question_posts.id]
+  dispute_post_id bigint [ref: > dispute_posts.id]
+
+  content text [not null] 
+
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+ 
+
+  indexes {
+    (free_post_id, created_at)
+    (question_post_id, created_at)
+    (dispute_post_id, created_at)
+    (user_id)
+  }
+
+  Note: '''
+    세 게시판의 댓글을 통합 관리한다.
+    free_post_id, question_post_id, dispute_post_id 중
+    정확히 하나만 값이 있어야 한다.
+
+    is_accept 
+    '''
+}
+
+
+ // ==========================================
+ // 6. 사건
+ // FR-003 사건 생성·조회
+ // ==========================================
+
+ Table cases {
+   id bigint [pk, increment]
+   user_id bigint [not null, ref: > users.id]
+
+   title varchar(255) [not null]
+   case_type varchar(50) [not null]
+   status varchar(30) [not null, default: 'REGISTERED']
+
+   merchant_name varchar(255) [not null]
+   purchase_site varchar(500) [not null]
+   order_number varchar(100)
+
+   purchase_date date
+   payment_amount decimal(15,2)
+
+   created_at timestamptz [not null, default: `now()`]
+   updated_at timestamptz [not null, default: `now()`]
+   resolved_at timestamptz
+
+   indexes {
+     (user_id)
+     (user_id, status)
+     (created_at)
+   }
+
+   Note: '''
+     case_type:
+     REFUND_DELAY
+     REFUND_NOT_PROCESSED
+     DUPLICATE_CHARGE
+     PAYMENT_CORRECTION
+
+     status:
+     REGISTERED
+     ANALYZING
+     NEED_USER_INFO
+     WAITING_APPROVAL
+     IN_PROGRESS
+     RESOLVED
+     CLOSED
+   '''
+ }
+
+ // ==========================================
+ // 7. 사건 증빙
+ // FR-004 증빙 등록·관리
+ // ==========================================
+
+ Table case_evidences {
+   id bigint [pk, increment]
+   case_id bigint [not null, ref: > cases.id]
+
+   evidence_type varchar(50) [not null]
+   description text
+
+   original_filename varchar(255) [not null]
+   stored_filename varchar(255) [not null]
+   file_path varchar(1000) [not null]
+   file_size bigint [not null]
+   content_type varchar(100)
+
+   analysis_status varchar(20) [not null, default: 'PENDING']
+
+   created_at timestamptz [not null, default: `now()`]
+   updated_at timestamptz [not null, default: `now()`]
+
+   indexes {
+     (case_id) 
+     (case_id, evidence_type)
+   }
+
+   Note: '''
+     evidence_type:
+     ORDER_CONFIRMATION
+     PAYMENT_RECORD
+     REFUND_RECORD
+     SCREENSHOT
+     PHOTO
+     CONVERSATION
+     OTHER
+
+     analysis_status:
+     PENDING
+     PROCESSING
+     COMPLETED
+     FAILED
+
+     파일 원본은 백엔드 파일 시스템에 저장한다.
+     DB에는 파일 경로 및 메타데이터만 저장한다.
+   '''
+ }
+
+ // ==========================================
+ // 8. 사건 상태 이력
+ // FR-005 사건 조회 및 상태 이력
+ // ==========================================
+
+ Table case_status_histories {
+   id bigint [pk, increment]
+   case_id bigint [not null, ref: > cases.id]
+   status varchar(30)
+   description text
+   created_at timestamptz [not null, default: `now()`]
+
+   indexes {
+     (case_id, created_at)
+   }
+
+   Note: '''
+     changed_by:
+     USER
+     SYSTEM
+     AI
+
+     최초 등록 시 previous_status는 NULL.
+     사건 상태 변경마다 이력을 기록한다.
+   '''
+ }
+
+
+ // ==========================================
+ // 9. AI 이메일 초안
+ // FR-010 대화형 영문 이메일 작성·수정
+ // ==========================================
+
+ Table email_drafts {
+   id bigint [pk, increment]
+   case_id bigint [not null, ref: > cases.id]
+
+   purpose varchar(100) [not null]
+   recipient_email varchar(255)
+
+   subject varchar(255) [not null]
+   body text [not null]
+
+   status varchar(20) [not null, default: 'DRAFT']
+   version int [not null, default: 1]
+
+   created_at timestamptz [not null, default: `now()`]
+   updated_at timestamptz [not null, default: `now()`]
+
+   indexes {
+     (case_id)
+     (case_id, status)
+   }
+
+   Note: '''
+     purpose:
+     REFUND_REQUEST
+     PAYMENT_CORRECTION
+     ADDITIONAL_INFORMATION
+     FOLLOW_UP
+     OTHER
+
+     status:
+     DRAFT
+     FINALIZED
+
+     FINALIZED는 작성 완료 상태이며
+     Gmail 발송 승인을 의미하지 않는다.
+
+     사용자와 AI의 대화에 따라
+     subject, body를 갱신한다.
+     수정 시 version을 증가시킨다.
+   '''
+ }
+
+
+// ==========================================
+// 10. 이메일 증빙 첨부 (N:M)
+// ==========================================
+
+Table email_draft_attachments {
+  id bigint [pk, increment]
+
+  email_draft_id bigint [not null, ref: > email_drafts.id]
+  evidence_id bigint [not null, ref: > case_evidences.id]
+
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (email_draft_id, evidence_id) [unique]
+    (evidence_id)
+  }
+
+  Note: '''
+    이메일 초안과 사건 증빙의 N:M 연결 테이블.
+
+    하나의 이메일에 여러 증빙 첨부 가능.
+    하나의 증빙을 여러 이메일에서 재사용 가능.
+
+    동일 이메일에 동일 증빙의 중복 첨부 방지.
+  '''
+}
+
