@@ -107,7 +107,6 @@ CREATE TABLE "email_drafts" (
   "subject" varchar(255) NOT NULL,
   "body" text NOT NULL,
   "status" varchar(20) NOT NULL DEFAULT 'DRAFT',
-  "version" int NOT NULL DEFAULT 1,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now())
 );
@@ -226,7 +225,6 @@ Gmail 발송 승인을 의미하지 않는다.
 
 사용자와 AI의 대화에 따라
 subject, body를 갱신한다.
-수정 시 version을 증가시킨다.
 ';
 
 COMMENT ON TABLE "email_draft_attachments" IS '이메일 초안과 사건 증빙의 N:M 연결 테이블.
