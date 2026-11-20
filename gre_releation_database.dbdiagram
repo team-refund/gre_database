@@ -46,8 +46,8 @@
       {
         "name": "case_evidences",
         "schemaName": "public",
-        "x": 48,
-        "y": 1024
+        "x": 279.3887451918593,
+        "y": 860.7692259332723
       },
       {
         "name": "case_status_histories",
@@ -66,6 +66,12 @@
         "schemaName": "public",
         "x": 648,
         "y": 1240
+      },
+      {
+        "name": "gmail_connections",
+        "schemaName": "public",
+        "x": 698.8564231738037,
+        "y": 1464.2795969773304
       }
     ],
     "tableGroupCollapseStates": [],
@@ -279,6 +285,21 @@
         "secondTableName": "email_draft_attachments",
         "secondSchemaName": "public",
         "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "users",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "user_id"
+        ],
+        "secondTableName": "gmail_connections",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
         "checkPoints": []
       }
     ],
