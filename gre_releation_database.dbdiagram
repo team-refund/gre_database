@@ -96,6 +96,24 @@
         "schemaName": "public",
         "x": 70.99353030311858,
         "y": 1807.425095616386
+      },
+      {
+        "name": "email_draft_message_embeddings",
+        "schemaName": "public",
+        "x": 897.6628118125527,
+        "y": 2534.3243833436945
+      },
+      {
+        "name": "email_send_attempts",
+        "schemaName": "public",
+        "x": 48.45375824162204,
+        "y": 2562.3324149379996
+      },
+      {
+        "name": "email_draft_messages",
+        "schemaName": "public",
+        "x": 421.90079670304135,
+        "y": 2683.0198283990317
       }
     ],
     "tableGroupCollapseStates": [],
@@ -412,6 +430,126 @@
           "run_id"
         ],
         "secondTableName": "case_interactions",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "email_drafts",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "email_draft_id"
+        ],
+        "secondTableName": "email_draft_dispatches",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "gmail_connections",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "gmail_connection_id"
+        ],
+        "secondTableName": "email_draft_dispatches",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "email_drafts",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "email_draft_id"
+        ],
+        "secondTableName": "email_draft_conversation_messages",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "email_draft_conversation_messages",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "conversation_message_id"
+        ],
+        "secondTableName": "email_draft_message_embeddings",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "email_drafts",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "email_draft_id"
+        ],
+        "secondTableName": "email_send_attempts",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "gmail_connections",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "gmail_connection_id"
+        ],
+        "secondTableName": "email_send_attempts",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "email_drafts",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "email_draft_id"
+        ],
+        "secondTableName": "email_draft_messages",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "email_draft_messages",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "message_id"
+        ],
+        "secondTableName": "email_draft_message_embeddings",
         "secondSchemaName": "public",
         "secondRelation": "*",
         "checkPoints": []
