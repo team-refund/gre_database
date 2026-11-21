@@ -114,6 +114,12 @@
         "schemaName": "public",
         "x": 1215.9380194070231,
         "y": 2286.475469884212
+      },
+      {
+        "name": "oauth2_authorized_client",
+        "schemaName": "public",
+        "x": 1010.8228438998522,
+        "y": 731.6314793872369
       }
     ],
     "tableGroupCollapseStates": [],
@@ -552,6 +558,23 @@
         "secondTableName": "email_draft_message_embeddings",
         "secondSchemaName": "public",
         "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "oauth_client_registration_id",
+          "oauth_principal_name"
+        ],
+        "firstTableName": "gmail_connections",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "client_registration_id",
+          "principal_name"
+        ],
+        "secondTableName": "oauth2_authorized_client",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
         "checkPoints": []
       }
     ],
