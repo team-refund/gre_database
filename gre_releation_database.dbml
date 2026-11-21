@@ -388,3 +388,50 @@ Table email_messages {
     동일 스레드 내 동일 Gmail 메시지의 중복 저장을 방지한다.
   '''
 }
+
+Table orchestrator_runs {
+  id bigint [pk, increment]
+  case_id bigint [not null, ref: > cases.id]
+
+  trigger_type varchar(30) [not null]
+  trigger_key varchar(255) [not null]
+
+  status varchar(20) [not null, default: 'PENDING']
+  next_action varchar(50)
+
+  result_data jsonb
+  error_message text
+
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  completed_at timestamptz
+
+  indexes {
+    (case_id, created_at)
+    (case_id, trigger_type, trigger_key) [unique]
+  }
+
+  Note: '''
+    trigger_type:
+    CASE_CREATED
+    EVIDENCE_ADDED
+    EMAIL_RECEIVED
+    USER_INFO_UPDATED
+    REFUND_CONFIRMED
+
+    status:
+    PENDING
+    PROCESSING
+    COMPLETED
+    FAILED
+
+    Orchestrator AI는 Spring AI Tool Calling으로
+    전문 AI와 Tool을 선택적으로 호출한다.
+
+    result_data에 하위 실행 결과,
+    최종 판단 근거 및 입력 데이터 참조를 저장한다.
+
+    Spring Boot는 Run 실행 상태와
+    실행 결과의 영속화를 담당한다.
+  '''
+}

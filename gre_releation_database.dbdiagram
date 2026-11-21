@@ -84,6 +84,12 @@
         "schemaName": "public",
         "x": 441.2423569250604,
         "y": 2116.097504222884
+      },
+      {
+        "name": "orchestrator_runs",
+        "schemaName": "public",
+        "x": 70.99353030311858,
+        "y": 1398.6338531764306
       }
     ],
     "tableGroupCollapseStates": [],
@@ -355,6 +361,21 @@
           "case_email_thread_id"
         ],
         "secondTableName": "email_messages",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "cases",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "case_id"
+        ],
+        "secondTableName": "orchestrator_runs",
         "secondSchemaName": "public",
         "secondRelation": "*",
         "checkPoints": []
