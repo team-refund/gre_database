@@ -70,7 +70,7 @@
       {
         "name": "gmail_connections",
         "schemaName": "public",
-        "x": 456,
+        "x": 459.75,
         "y": 792
       },
       {
@@ -78,6 +78,12 @@
         "schemaName": "public",
         "x": 456.5,
         "y": 1902.9551954209846
+      },
+      {
+        "name": "email_messages",
+        "schemaName": "public",
+        "x": 441.2423569250604,
+        "y": 2116.097504222884
       }
     ],
     "tableGroupCollapseStates": [],
@@ -319,6 +325,36 @@
           "case_id"
         ],
         "secondTableName": "case_email_threads",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "gmail_connections",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "gmail_connection_id"
+        ],
+        "secondTableName": "case_email_threads",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "case_email_threads",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "case_email_thread_id"
+        ],
+        "secondTableName": "email_messages",
         "secondSchemaName": "public",
         "secondRelation": "*",
         "checkPoints": []
