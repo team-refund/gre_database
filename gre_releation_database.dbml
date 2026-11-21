@@ -435,3 +435,38 @@ Table orchestrator_runs {
     실행 결과의 영속화를 담당한다.
   '''
 }
+
+Table case_interactions {
+  id bigint [pk, increment]
+
+  case_id bigint [not null, ref: > cases.id]
+  run_id bigint [not null, ref: > orchestrator_runs.id]
+
+  interaction_type varchar(20) [not null]
+  prompt text [not null]
+
+  options jsonb
+  response jsonb
+
+  status varchar(20) [not null, default: 'PENDING']
+
+  created_at timestamptz [not null, default: `now()`]
+  responded_at timestamptz
+
+  Note: '''
+    interaction_type:
+    TEXT
+    SELECT
+    FILE_UPLOAD
+
+    status:
+    PENDING
+    ANSWERED
+    CANCELLED
+
+    Orchestrator가 요청한 사용자 입력을 관리한다.
+
+    사용자 답변 이후 새로운 Run을 생성한다.
+    기존 Run을 재개하지 않는다.
+  '''
+}

@@ -90,6 +90,12 @@
         "schemaName": "public",
         "x": 70.99353030311858,
         "y": 1398.6338531764306
+      },
+      {
+        "name": "case_interactions",
+        "schemaName": "public",
+        "x": 70.99353030311858,
+        "y": 1807.425095616386
       }
     ],
     "tableGroupCollapseStates": [],
@@ -376,6 +382,36 @@
           "case_id"
         ],
         "secondTableName": "orchestrator_runs",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "cases",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "case_id"
+        ],
+        "secondTableName": "case_interactions",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "orchestrator_runs",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "run_id"
+        ],
+        "secondTableName": "case_interactions",
         "secondSchemaName": "public",
         "secondRelation": "*",
         "checkPoints": []
