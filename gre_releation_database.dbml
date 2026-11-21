@@ -347,3 +347,13 @@ Table email_draft_attachments {
   '''
 }
 
+Table case_email_threads {
+  id bigint [pk, increment]
+  case_id bigint [not null, ref: > cases.id]
+  gmail_thread_id varchar(255) [not null]
+  created_at timestamptz [not null, default: `now()`]
+
+  indexes {
+    (case_id, gmail_thread_id) [unique]
+  }
+}
