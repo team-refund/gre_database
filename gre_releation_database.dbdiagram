@@ -100,8 +100,8 @@
       {
         "name": "email_draft_message_embeddings",
         "schemaName": "public",
-        "x": 897.6628118125527,
-        "y": 2534.3243833436945
+        "x": 1137.9380194070231,
+        "y": 2483.61538609116
       },
       {
         "name": "email_send_attempts",
@@ -112,8 +112,8 @@
       {
         "name": "email_draft_messages",
         "schemaName": "public",
-        "x": 421.90079670304135,
-        "y": 2683.0198283990317
+        "x": 1215.9380194070231,
+        "y": 2286.475469884212
       }
     ],
     "tableGroupCollapseStates": [],
