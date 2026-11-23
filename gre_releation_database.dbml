@@ -147,6 +147,7 @@ Table community_comments {
 
    merchant_name varchar(255) [not null]
    purchase_site varchar(500) [not null]
+   merchant_email varchar(255) [not null]
    order_number varchar(100)
 
    purchase_date date

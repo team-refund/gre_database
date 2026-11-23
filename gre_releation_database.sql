@@ -70,6 +70,7 @@ CREATE TABLE "cases" (
   "status" varchar(30) NOT NULL DEFAULT 'REGISTERED',
   "merchant_name" varchar(255) NOT NULL,
   "purchase_site" varchar(500) NOT NULL,
+  "merchant_email" varchar(255) NOT NULL,
   "order_number" varchar(100),
   "purchase_date" date,
   "payment_amount" decimal(15,2), -- 원화(KRW) 기준 결제 금액
