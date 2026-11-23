@@ -1,0 +1,19 @@
+services:
+  db:
+    image: gre-database:pg18-vector0.8.2
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-gre}
+      POSTGRES_USER: ${POSTGRES_USER:-gre}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      TZ: Asia/Seoul
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - gre_pgdata:/var/lib/postgresql
+    restart: unless-stopped
+
+volumes:
+  gre_pgdata:
