@@ -488,6 +488,85 @@ Table orchestrator_runs {
   '''
 }
 
+Table policy_rag_requests {
+  id bigint [pk, increment]
+  run_id bigint [not null, ref: > orchestrator_runs.id, note: '이 호출을 요청한 중앙 판단 AI 실행 ID']
+
+  checkout_site varchar(500) [not null, note: '실제 결제 사이트 도메인. 예: ebay.com.']
+  case_type varchar(50) [note: '확정된 분쟁 유형 코드. 미확정이면 NULL.']
+  consumer_request text [not null, note: '소비자가 원하는 해결.']
+  purchase_date date [note: '정책 적용 시점 검토에 쓰는 구매일.']
+  item_amount jsonb [note: '물품가액. 예: {"amount":120,"currency":"USD"}.']
+  confirmed_facts "text[]" [not null, note: '검색 질문에 쓸 확인 사실. 요청의 종류와 확인된 일시도 함께 기록.']
+  unresolved_facts "text[]" [not null, default: `'{}'::text[]`, note: '적용 판단에 영향을 주는 미확인·상충 사실.']
+
+  created_at timestamptz [not null, default: `now()`, note: '호출 입력을 저장한 시각']
+
+  indexes {
+    (run_id)
+  }
+
+  checks {
+    `case_type IS NULL OR case_type IN ('REFUND_DELAY', 'REFUND_NOT_PROCESSED', 'DUPLICATE_CHARGE', 'PAYMENT_CORRECTION')` [name: 'policy_rag_requests_case_type_check']
+  }
+
+  Note: '''
+    한 행은 사건 분석 AI가 정리한 RAG 호출 입력 한 건이다. 중앙 판단 실행 한 건에서 여러 번 호출할 수 있다.
+    구매일과 물품가액을 모르면 NULL, 사실 목록에 항목이 없으면 빈 배열을 사용한다.
+    예를 들어 판매자가 환불했다고 회신한 사실과 카드에 실제 반영됐는지는 구분해 기록한다.
+  '''
+}
+
+Table policy_rag_results {
+  request_id bigint [pk, ref: - policy_rag_requests.id, note: '정책 RAG 요청 ID. 요청 한 건에 최종 결과를 최대 한 건 저장한다.']
+  status varchar(30) [not null, note: 'COMPLETED: 검토 완료, NOT_FOUND: 관련 공식 조항 미확인, INSUFFICIENT_FACTS: 필수 거래 사실 부족, FAILED: 기술 오류.']
+  clauses jsonb [not null, default: `'[]'::jsonb`, note: '검토한 공식 조항의 JSON 배열. 관련 조항이 없으면 [].']
+  note text [note: '근거 부족 이유 또는 추가 확인 사항. 해당 사항이 없으면 NULL.']
+
+  checks {
+    `status IN ('COMPLETED', 'NOT_FOUND', 'INSUFFICIENT_FACTS', 'FAILED')` [name: 'policy_rag_results_status_check']
+    `jsonb_typeof(clauses) = 'array'` [name: 'policy_rag_results_clauses_array_check']
+  }
+
+  Note: '''
+    중앙 판단 AI에는 status, clauses, note를 전달한다. 결과에 인용문과 출처를 함께 남겨 정책 갱신 뒤에도 확인할 수 있다.
+    COMPLETED는 검토 완료를 뜻한다. 이메일의 주장 근거에는 APPLICABLE 조항을 사용한다.
+    UNCERTAIN은 적용 미확인, NOT_APPLICABLE은 적용 불가다. 조항 제목과 번호가 모두 없으면 section은 null이다.
+
+    전달 JSON 예시 (updatedAt은 예시 값):
+    {
+      "status": "COMPLETED",
+      "clauses": [{
+        "quoteEn": "2 business days after receiving the returned item.",
+        "section": "Actions & time frames for not as described returns",
+        "source": {
+          "platform": "EBAY", "site": "ebay.com",
+          "policyTitle": "eBay Money Back Guarantee policy",
+          "sourceUrl": "https://www.ebay.com/help/policies/ebay/ebay?id=4210",
+          "updatedAt": "2026-11-23T01:00:00Z"
+        },
+        "applicability": "UNCERTAIN"
+      }],
+      "note": "이 주문에 추가 환불 기한이 부여됐는지 확인 필요."
+    }
+  '''
+}
+
+Table policy_vector_store {
+  id uuid [pk, note: '공식 정책 조항 청크의 고유 ID']
+  content text [not null, note: '공식 HTML에서 추출한 영어 조항. 제목과 번호, 적용 조건, 기한, 예외를 함께 보존한다.']
+  metadata jsonb [not null, note: '검색 범위, 공식 출처, 마지막 정상 적재 시각.']
+  embedding vector [not null, note: '조항의 검색용 임베딩. 벡터 차원은 임베딩 모델 선정 후 확정한다.']
+
+  Note: '''
+    한 행은 공식 정책의 영어 조항 청크 한 건이다.
+    metadata 필수 키는 platform, site, sourceUrl, policyTitle, updatedAt이다.
+    checkout_site를 platform과 site로 매핑해 검색하고, sourceUrl과 policyTitle을 공식 출처로 전달한다.
+    updatedAt은 문서의 마지막 정상 적재 시각이다(ISO 8601). 같은 문서의 청크에 동일한 값을 넣는다.
+    갱신은 (platform, site, sourceUrl) 단위로 처리한다. 새 청크와 임베딩이 준비되면 한 트랜잭션에서 교체한다.
+  '''
+}
+
 Table case_interactions {
   id bigint [pk, increment]
 

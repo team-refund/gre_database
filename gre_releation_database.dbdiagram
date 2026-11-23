@@ -120,6 +120,24 @@
         "schemaName": "public",
         "x": 1010.8228438998522,
         "y": 731.6314793872369
+      },
+      {
+        "name": "policy_rag_requests",
+        "schemaName": "public",
+        "x": 1706,
+        "y": 1399
+      },
+      {
+        "name": "policy_rag_results",
+        "schemaName": "public",
+        "x": 1706,
+        "y": 1839
+      },
+      {
+        "name": "policy_vector_store",
+        "schemaName": "public",
+        "x": 1706,
+        "y": 2279
       }
     ],
     "tableGroupCollapseStates": [],
@@ -573,6 +591,36 @@
           "principal_name"
         ],
         "secondTableName": "oauth2_authorized_client",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "orchestrator_runs",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "run_id"
+        ],
+        "secondTableName": "policy_rag_requests",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "policy_rag_requests",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "request_id"
+        ],
+        "secondTableName": "policy_rag_results",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
