@@ -122,22 +122,16 @@
         "y": 731.6314793872369
       },
       {
-        "name": "policy_rag_requests",
-        "schemaName": "public",
-        "x": 1706,
-        "y": 1399
-      },
-      {
         "name": "policy_rag_results",
         "schemaName": "public",
-        "x": 1706,
-        "y": 1839
+        "x": 1748.3325262532237,
+        "y": 1778.7937404398601
       },
       {
         "name": "policy_vector_store",
         "schemaName": "public",
-        "x": 1706,
-        "y": 2279
+        "x": 1754.917585892614,
+        "y": 1937.5176215573297
       }
     ],
     "tableGroupCollapseStates": [],
