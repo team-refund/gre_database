@@ -544,8 +544,21 @@ Table orchestrator_runs {
 
 Table policy_rag_results {
   id bigint [pk, increment, note: '정책 RAG 결과의 고유 ID.']
-  chunk_excerpts text[] [not null, default: `'{}'::text[]`, note: '검색된 청크에서 발췌한 연속된 영문 원문 목록. 발췌문이 없으면 빈 배열이다.']
-  supplement_note text [note: '환불·교환 판단에 추가로 확인할 사실이나 준비할 증빙을 기록한다.']
+  clauses jsonb [not null, default: `'[]'::jsonb`, note: '응답의 clauses 배열. 항목은 chunkId, policyName, articleTitle, articleNumber, originalTextEn, officialUrl을 담는다.']
+  reviews jsonb [not null, default: `'[]'::jsonb`, note: '응답의 reviews 배열. 항목은 chunkId, applicability, reason, missingInformation을 담는다.']
+  evidence_gaps text [note: '응답의 evidenceGaps. 사건에서 추가로 확인할 거래 사실이나 준비할 증빙에 대한 보완 노트.']
+
+  checks {
+    `jsonb_typeof(clauses) = 'array'` [name: 'policy_rag_results_clauses_array_check']
+    `jsonb_typeof(reviews) = 'array'` [name: 'policy_rag_results_reviews_array_check']
+  }
+
+  Note: '''
+    사건별 조회는 orchestrator_runs.result_data의 policyRagResultId로 이 테이블의 id를 찾는다.
+    caseId는 orchestrator_runs.case_id에서 가져오며 searchStatus는 실험용 응답에서만 사용한다.
+    clauses와 reviews는 chunkId로 연결한다. originalTextEn에는 연속된 영문 원문 발췌를 저장한다.
+    발췌문이 없는 청크와 해당 청크의 검토 항목은 배열에서 제외한다.
+  '''
 }
 
 Table policy_vector_store {
