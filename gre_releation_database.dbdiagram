@@ -10,128 +10,128 @@
       {
         "name": "users",
         "schemaName": "public",
-        "x": 16,
-        "y": 328
+        "x": 648,
+        "y": 16
       },
       {
         "name": "free_posts",
         "schemaName": "public",
-        "x": 456,
-        "y": 448
+        "x": 1248,
+        "y": 16
       },
       {
         "name": "question_posts",
         "schemaName": "public",
-        "x": 1255.898425081724,
-        "y": 157.67790966669503
+        "x": 1248,
+        "y": 344
       },
       {
         "name": "dispute_posts",
         "schemaName": "public",
-        "x": 432.53495293487856,
-        "y": -86.65958090990554
+        "x": 1248,
+        "y": 776
       },
       {
         "name": "community_comments",
         "schemaName": "public",
-        "x": 889.392321299373,
-        "y": 293.8159652628393
+        "x": 2000,
+        "y": 16
       },
       {
         "name": "cases",
         "schemaName": "public",
-        "x": 453.5,
-        "y": 1430.83859359717
+        "x": 1248,
+        "y": 1208
       },
       {
         "name": "case_evidences",
         "schemaName": "public",
-        "x": 813.1108732632479,
-        "y": 1995.0857888851265
+        "x": 2000,
+        "y": 344
       },
       {
         "name": "case_status_histories",
         "schemaName": "public",
-        "x": 813.6108732632479,
-        "y": 1430.83859359717
+        "x": 2000,
+        "y": 808
       },
       {
         "name": "email_drafts",
         "schemaName": "public",
-        "x": 813.1108732632479,
-        "y": 1645.5149140462229
+        "x": 2000,
+        "y": 1048
       },
       {
         "name": "email_draft_attachments",
         "schemaName": "public",
-        "x": 1203.9380194070231,
-        "y": 1787.3040228259251
+        "x": 2712,
+        "y": 16
       },
       {
         "name": "gmail_connections",
         "schemaName": "public",
-        "x": 459.75,
-        "y": 792
+        "x": 1248,
+        "y": 1736
       },
       {
         "name": "case_email_threads",
         "schemaName": "public",
-        "x": 456.5,
-        "y": 1902.9551954209846
+        "x": 2000,
+        "y": 1416
       },
       {
         "name": "email_messages",
         "schemaName": "public",
-        "x": 441.2423569250604,
-        "y": 2116.097504222884
+        "x": 2712,
+        "y": 456
       },
       {
         "name": "orchestrator_runs",
         "schemaName": "public",
-        "x": 70.99353030311858,
-        "y": 1398.6338531764306
+        "x": 2000,
+        "y": 1648
       },
       {
         "name": "case_interactions",
         "schemaName": "public",
-        "x": 70.99353030311858,
-        "y": 1807.425095616386
+        "x": 2712,
+        "y": 856
       },
       {
         "name": "email_draft_message_embeddings",
         "schemaName": "public",
-        "x": 1137.9380194070231,
-        "y": 2483.61538609116
+        "x": 3304,
+        "y": 16
       },
       {
         "name": "email_send_attempts",
         "schemaName": "public",
-        "x": 48.45375824162204,
-        "y": 2562.3324149379996
+        "x": 2712,
+        "y": 1256
       },
       {
         "name": "email_draft_messages",
         "schemaName": "public",
-        "x": 1215.9380194070231,
-        "y": 2286.475469884212
+        "x": 2712,
+        "y": 216
       },
       {
         "name": "oauth2_authorized_client",
         "schemaName": "public",
-        "x": 1010.8228438998522,
-        "y": 731.6314793872369
+        "x": 648,
+        "y": 376
       },
       {
         "name": "policy_rag_results",
         "schemaName": "public",
-        "x": 1748.3325262532237,
-        "y": 1778.7937404398601
+        "x": 16,
+        "y": 16
       },
       {
         "name": "policy_vector_store",
         "schemaName": "public",
-        "x": 1754.917585892614,
-        "y": 1937.5176215573297
+        "x": 336,
+        "y": 16
       }
     ],
     "tableGroupCollapseStates": [],
@@ -462,66 +462,6 @@
         "secondFieldNames": [
           "email_draft_id"
         ],
-        "secondTableName": "email_draft_dispatches",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "gmail_connections",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "gmail_connection_id"
-        ],
-        "secondTableName": "email_draft_dispatches",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "email_drafts",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "email_draft_id"
-        ],
-        "secondTableName": "email_draft_conversation_messages",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "email_draft_conversation_messages",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "conversation_message_id"
-        ],
-        "secondTableName": "email_draft_message_embeddings",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "email_drafts",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "email_draft_id"
-        ],
         "secondTableName": "email_send_attempts",
         "secondSchemaName": "public",
         "secondRelation": "1",
@@ -585,36 +525,6 @@
           "principal_name"
         ],
         "secondTableName": "oauth2_authorized_client",
-        "secondSchemaName": "public",
-        "secondRelation": "1",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "orchestrator_runs",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "run_id"
-        ],
-        "secondTableName": "policy_rag_requests",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "policy_rag_requests",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "request_id"
-        ],
-        "secondTableName": "policy_rag_results",
         "secondSchemaName": "public",
         "secondRelation": "1",
         "checkPoints": []
